@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class Word {
 	private String name;
@@ -19,5 +22,6 @@ public class Word {
 	public void incrementCount() {
 		this.count++;
 	}
+
 
 }
