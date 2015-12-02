@@ -29,6 +29,21 @@ public class Vocabulary {
 	}
 	
 	/**
+	 * Searches the word in the vocabulary and returns its count
+	 * @param given_word
+	 * @return
+	 */
+	public int countByWord(String given_word) {
+		int counter = 0;
+		Word word = searchWord(given_word);
+		if (word != null) {
+			counter = word.count();
+		}
+			
+		return counter;
+	}
+	
+	/**
 	 * Adds a given word, from the normalized and tokenized document,
 	 * to this word vocabulary. If already exists in the vocabulary it
 	 * increments the count of this word with 1.
@@ -47,6 +62,22 @@ public class Vocabulary {
 			Word w = new Word(given_word);
 			this.vocabulary.add(w);
 		}
+	}
+	
+	public void addWords(ArrayList<String> given_words) {
+		for (String w : given_words) {
+			this.addWord(w);
+		}
+	}
+	
+	private Word searchWord(String searchName) {
+		Word resultWord = null;
+		for (Word word : vocabulary) {
+			if (word.name().equals(searchName)) {
+				resultWord = word;
+			}
+		}
+		return resultWord;
 	}
 	
 	
