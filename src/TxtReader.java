@@ -13,7 +13,7 @@ public class TxtReader {
 		ArrayList<String> list = new ArrayList<String>();
 		while (s.hasNext()){
 		    list.add(s.next());
-		    System.out.println(s.hasNext());
+		    System.out.println(s.next());
 		}
 		s.close();
 		return list;
