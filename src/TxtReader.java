@@ -95,29 +95,6 @@ public class TxtReader {
 		return listAll;
 	}
 
-	public static void main(String[] args) {
-		TxtReader tr = new TxtReader();
-		/*
-		 * try { ArrayList myList = tr.readTxt(
-		 * "C:/Development/eclipse/workspace/interactive_learner/blogs/F/F-test1.txt"
-		 * ); System.out.println(tr.normalize(myList).toString()); } catch
-		 * (FileNotFoundException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 */
-		File dir = new File(
-				"C:/Development/eclipse/workspace/interactive_learner/blogs/F");
-		File[] directoryListing = dir.listFiles();
-		if (directoryListing != null) {
-			for (File child : directoryListing) {
-				System.out.println(tr.getCategoryName(child));
-			}
-		} else {
-			// Handle the case where dir is not really a directory.
-			// Checking dir.isDirectory() above would not be sufficient
-			// to avoid race conditions with another process that deletes
-			// directories.
-		}
-
-	}
+	
 
 }
