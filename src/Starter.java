@@ -135,23 +135,32 @@ public class Starter {
 		
 		//ArrayList<String> test_doc1_male = new ArrayList<>(Arrays.asList("i", "went", "to", "party", "policeman"));
 		TxtReader tr = new TxtReader();
-		ArrayList<String> test_doc1_male = null; 
+		ArrayList<String> test_doc1_male = null;
+		ArrayList<String> test_doc2_male = null;
+		ArrayList<String> test_doc3_male = null;
+		ArrayList<String> test_doc4_male = null;
 		try {
-			test_doc1_male= tr.normalize(tr.readTxt("/Users/Guido/Development/Java/eclipse/workspace/interactive_learner/blogs/M/M-test3.txt"));
+			test_doc1_male= tr.normalize(tr.readTxt("/Users/Guido/Development/Java/eclipse/workspace/interactive_learner/blogs/F/F-test14.txt"));
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		double highestProb = 0.0;
+		double highestProb = Double.NEGATIVE_INFINITY;
 		Category highestCategory = null;
 		for (Category cat : starter.categories) {
 			double prob = cat.getProbability(test_doc1_male, starter.getTotalDocumentCount(), starter.totalVocabulary);
+			System.out.println("Category: " + cat.name());
+			System.out.println(prob + " > " + highestProb + " = " + (prob > highestProb));
 			if (prob > highestProb) {
 				highestProb = prob;
 				highestCategory = cat;
 			}
 		}
+		
+
+
 		
 		//RESULT
 		System.out.println("Predicted class: " + highestCategory.name() + " (" + highestProb + ")");

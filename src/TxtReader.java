@@ -82,10 +82,8 @@ public class TxtReader {
 					String category = getCategoryName(child);
 
 					// Zet array en category in een tupel
-					// TODO methode train aanroepen(array, category)
 					listAll.add(new Tuple<String, ArrayList<String>>(category, normalizedArrayList));
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
