@@ -53,7 +53,7 @@ public class TxtReader {
 
 	// Reads a filename and splits it at the "-" sign. The word before the "-"
 	// sign is used as the categoryName
-	public String getCategory(File file) {
+	public String getCategoryName(File file) {
 		String filename = file.getName();
 		String categoryName = filename.split("-")[0];
 		return categoryName;
@@ -61,6 +61,12 @@ public class TxtReader {
 
 	// Reads all .txt files from a given directory and returns the text in an
 	// array and the classification category
+	/**
+	 * Reads all the files in a given directory to output a tokenized and normalized format
+	 * Training file should be of format: "CLASSNAME-rest.txt"
+	 * @param directoryPath - directory where all the training files are
+	 * @return Arraylist of tuples containing a String of the category name and a arraylist of all the tokens
+	 */
 	public ArrayList<Tuple<String, ArrayList<String>>> importAll(String directoryPath) {
 		// Voorbeeld: Tuple<"F", [hoi, ik, ben, een, blogger]>
 		ArrayList<Tuple<String, ArrayList<String>>> listAll = new ArrayList<Tuple<String, ArrayList<String>>>();
@@ -73,7 +79,7 @@ public class TxtReader {
 					ArrayList<String> normalizedArrayList = normalize(readTxt(child.getAbsolutePath()));
 
 					// Vraag bijbehorende category op
-					String category = getCategory(child);
+					String category = getCategoryName(child);
 
 					// Zet array en category in een tupel
 					// TODO methode train aanroepen(array, category)
@@ -103,7 +109,7 @@ public class TxtReader {
 		File[] directoryListing = dir.listFiles();
 		if (directoryListing != null) {
 			for (File child : directoryListing) {
-				System.out.println(tr.getCategory(child));
+				System.out.println(tr.getCategoryName(child));
 			}
 		} else {
 			// Handle the case where dir is not really a directory.
