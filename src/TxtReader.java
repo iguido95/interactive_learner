@@ -94,7 +94,16 @@ public class TxtReader {
 		}
 		return listAll;
 	}
-
+	
+	public static void main(String[] args) {
+		TxtReader tr = new TxtReader();
+		try {
+			System.out.println(tr.normalize(tr.readTxt("C:/Development/eclipse/workspace/interactive_learner/blogs/M/M-test3.txt")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 
 }
