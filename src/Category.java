@@ -60,6 +60,7 @@ public class Category {
 		System.out.println("teller: " + teller);
 		System.out.println("noemer: " + noemer);
 		System.out.println("totaal: " + conditionalProb);
+
 		return conditionalProb;
 	}
 

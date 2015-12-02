@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -132,7 +133,15 @@ public class Starter {
 		
 		//TESTEN
 		
-		ArrayList<String> test_doc1_male = new ArrayList<>(Arrays.asList("i", "went", "to", "party", "policeman"));
+		//ArrayList<String> test_doc1_male = new ArrayList<>(Arrays.asList("i", "went", "to", "party", "policeman"));
+		TxtReader tr = new TxtReader();
+		ArrayList<String> test_doc1_male = null; 
+		try {
+			test_doc1_male= tr.normalize(tr.readTxt("/Users/Guido/Development/Java/eclipse/workspace/interactive_learner/blogs/M/M-test3.txt"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		double highestProb = 0.0;
 		Category highestCategory = null;
