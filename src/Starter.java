@@ -66,18 +66,19 @@ public class Starter {
 			//Exit als user dat vertelt 
 		
 		while (true) {
-			if (TUI.getTrainingPath().equals("EXIT")) {
+			String userInput = TUI.getTestFilePath();
+			if (userInput.equals(TUI.EXIT)) {
 				break;
 			}
 			
 			Category predictedCategory = null;
 			try {
-				predictedCategory = categories.predictCategoryByFile(TUI.getTrainingPath());
+				predictedCategory = categories.predictCategoryByFile(userInput);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}	
 			
-			TUI.getPredictedClass(predictedCategory);
+			TUI.printPredictedCategory(predictedCategory);
 			
 		}
 

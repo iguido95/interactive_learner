@@ -6,6 +6,8 @@ public class TUI {
 	public TUI() {	
 	}
 	
+	public static final String EXIT = "EXIT";
+	
 	public static String getTrainingPath() {
 		System.out.println("Please provide path to trainingset directory:");
 		Scanner s = new Scanner(System.in);
@@ -15,15 +17,22 @@ public class TUI {
 	}
 	
 	public static String getTestFilePath() {
-		System.out.println("Please provide path to test file:");
+		System.out.println("\nPlease provide path to test file or '" + EXIT + "' if you want to stop: ");
 		Scanner s = new Scanner(System.in);
 		String testFilePath = s.next();
-		System.out.println("You have provided " + testFilePath + " as test file path");
+		
+		if (testFilePath.equals(EXIT)) {
+			System.out.println("Goodbye :'(");
+		} else {
+			System.out.println("You have provided " + testFilePath + " as test file path");
+		}
 		return testFilePath;
 	}
 	
-	public void getPredictedClass(Category category){
+	public static void printPredictedCategory(Category category){
+		System.out.println("-------------------------------------");
 		System.out.println("The predicted category is: " + category.name());
+		System.out.println("-------------------------------------");
 	}
 
 }
