@@ -53,11 +53,11 @@ public class TestPredictionAccuracy {
 	public static void main(String[] argv) throws NoDirectoryException, FileNotFoundException {
 		DecimalFormat percentage = new DecimalFormat("#0.0%");
 		
-		TestPredictionAccuracy test = new TestPredictionAccuracy("blogs/TRAINING");		
+		TestPredictionAccuracy test = new TestPredictionAccuracy("mails/TRAINING");		
 		
-		System.out.println("Accuracy for Female: " + percentage.format(test.testPrediction("blogs/F")));
-		System.out.println("Accuracy for Male: " + percentage.format(test.testPrediction("blogs/M")));
-		System.out.println("Accuracy for both: " + percentage.format(test.testPrediction("blogs/FM")));
+		//System.out.println("Accuracy for Female: " + percentage.format(test.testPrediction("blogs/F")));
+		//System.out.println("Accuracy for Male: " + percentage.format(test.testPrediction("blogs/M")));
+		System.out.println("Accuracy for both: " + percentage.format(test.testPrediction("mails/TEST")));
 
 
 	}
