@@ -55,6 +55,9 @@ public class Vocabulary {
 			if (w.name().equals(given_word)) {
 				w.incrementCount();
 				found = true; //TODO stop for loop when found
+				if (found) {
+					break;
+				}
 			}
 		}
 		
