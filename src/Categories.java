@@ -24,6 +24,7 @@ public class Categories {
 	 */
 	public void addTrainingData(String pathName) {
 		ArrayList<Tuple<String, ArrayList<String>>> trainingData = (new TxtReader()).importAll(pathName);
+		System.out.println("###### TXTREADER KLAAR");
 
 		for (Tuple<String, ArrayList<String>> tuple : trainingData) {
 			String categoryName = tuple.x;
@@ -32,6 +33,7 @@ public class Categories {
 			category.addDocument(tokens);
 			this.totalVocabulary.addWords(tokens);
 		}
+		System.out.println("#### CATEGORIES INLADEN KLAAR");
 	}
 	
 	/**

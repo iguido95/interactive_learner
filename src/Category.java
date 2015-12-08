@@ -62,7 +62,10 @@ public class Category {
 		return conditionalProb;
 	}
 
-	
+	/**
+	 * Adds the tokenized document to the category
+	 * @param tokens
+	 */
 	public void addDocument(ArrayList<String> tokens) {
 		for (String token : tokens) {
 			this.addWord(token);
