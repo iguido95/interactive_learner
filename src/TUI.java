@@ -21,5 +21,10 @@ public class TUI {
 		System.out.println("You have provided " + testFilePath + " as test file path");
 		return testFilePath;
 	}
+	
+	public void getPredictedClass(Category category){
+		System.out.println("The predicted category is: " + category.name());
+	}
 
 }
+ 
