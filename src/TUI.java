@@ -12,7 +12,8 @@ public class TUI {
 		System.out.println("Please provide path to trainingset directory:");
 		Scanner s = new Scanner(System.in);
 		String trainingPath = s.next();
-		System.out.println("You have provided " + trainingPath + " as trainingset directory");
+		System.out.println("You have provided " + trainingPath + " as training set directory");
+		System.out.println("Please wait. The AI is learning ...");
 		return trainingPath;
 	}
 	
@@ -30,9 +31,9 @@ public class TUI {
 	}
 	
 	public static void printPredictedCategory(Category category){
-		System.out.println("-------------------------------------");
+		System.out.println("\n-------------------------------------");
 		System.out.println("The predicted category is: " + category.name());
-		System.out.println("-------------------------------------");
+		System.out.println("-------------------------------------\n");
 	}
 
 }

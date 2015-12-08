@@ -1,6 +1,8 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import exceptions.NoDirectoryException;
+
 /**
  * the collection of all categories from the training set and their dependent data
  * (eg. vocabulary of whole document, document count etc)
@@ -20,11 +22,12 @@ public class Categories {
 	 * adds all the documents that are in that directory
 	 * The files should all be of the form CATEGORYNAME-restFileName.txt
 	 * The categoryname must be unique.
+	 * @throws NoDirectoryException 
 	 * 
 	 */
-	public void addTrainingData(String pathName) {
+	public void addTrainingData(String pathName) throws NoDirectoryException {
 		ArrayList<Tuple<String, ArrayList<String>>> trainingData = (new TxtReader()).importAll(pathName);
-		System.out.println("###### TXTREADER KLAAR");
+		System.out.println("... Creating Bayesian network");
 
 		for (Tuple<String, ArrayList<String>> tuple : trainingData) {
 			String categoryName = tuple.x;
@@ -33,7 +36,7 @@ public class Categories {
 			category.addDocument(tokens);
 			this.totalVocabulary.addWords(tokens);
 		}
-		System.out.println("#### CATEGORIES INLADEN KLAAR");
+		System.out.println("Bayesian network has been created!");
 	}
 	
 	/**

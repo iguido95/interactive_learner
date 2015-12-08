@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import exceptions.NoDirectoryException;
+
 public class TxtReader {
 
 	TxtReader() {
@@ -62,8 +64,9 @@ public class TxtReader {
 	 * Training file should be of format: "CLASSNAME-rest.txt"
 	 * @param directoryPath - directory where all the training files are
 	 * @return Arraylist of tuples containing a String of the category name and a arraylist of all the tokens
+	 * @throws NoDirectoryException 
 	 */
-	public static ArrayList<Tuple<String, ArrayList<String>>> importAll(String directoryPath) {
+	public static ArrayList<Tuple<String, ArrayList<String>>> importAll(String directoryPath) throws NoDirectoryException {
 		// Voorbeeld: Tuple<"F", [hoi, ik, ben, een, blogger]>
 		ArrayList<Tuple<String, ArrayList<String>>> listAll = new ArrayList<Tuple<String, ArrayList<String>>>();
 
@@ -84,25 +87,13 @@ public class TxtReader {
 				}
 			}
 		} else {
-			System.out.println("Error in importAll function, given path might not be a directory");
+			System.err.println("Error in importAll function, given path might not be a directory");
+			throw new NoDirectoryException();
 		}
 		return listAll;
 	}
 	
-	/**
-	 * Reads one file, normlizes and tokenizes it and returns the tokens as an arrayList
-	 */
-	
-	
-	public static void main(String[] args) {
-		TxtReader tr = new TxtReader();
-		try {
-			System.out.println(tr.normalize(tr.readTxt("C:/Development/eclipse/workspace/interactive_learner/blogs/M/M-test3.txt")));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 	
 
 }
