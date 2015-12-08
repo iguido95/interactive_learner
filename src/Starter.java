@@ -60,19 +60,27 @@ public class Starter {
 		
 		Categories categories = new Categories();
 		//Roep TUI aan, om path name op te vragen voor training data.
-		categories.addTrainingData(args[0]);
+		categories.addTrainingData(TUI.getTrainingPath());
 		
 		//Loop in TUI om steeds weer een test document toe te voegen
 			//Exit als user dat vertelt 
-		Category predictedCategory = null;
-		try {
-			predictedCategory = categories.predictCategoryByFile(args[1]);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		System.out.println(predictedCategory.name());
+		while (true) {
+			if (TUI.getTrainingPath().equals("EXIT")) {
+				break;
+			}
+			
+			Category predictedCategory = null;
+			try {
+				predictedCategory = categories.predictCategoryByFile(TUI.getTrainingPath());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}	
+			
+			TUI.getPredictedClass(predictedCategory);
+			
+		}
+
 
 		
 		

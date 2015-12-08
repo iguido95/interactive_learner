@@ -6,7 +6,7 @@ public class TUI {
 	public TUI() {	
 	}
 	
-	public String getTrainingPath() {
+	public static String getTrainingPath() {
 		System.out.println("Please provide path to trainingset directory:");
 		Scanner s = new Scanner(System.in);
 		String trainingPath = s.next();
@@ -14,7 +14,7 @@ public class TUI {
 		return trainingPath;
 	}
 	
-	public String getTestFilePath() {
+	public static String getTestFilePath() {
 		System.out.println("Please provide path to test file:");
 		Scanner s = new Scanner(System.in);
 		String testFilePath = s.next();
