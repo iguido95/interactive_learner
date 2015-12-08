@@ -15,7 +15,7 @@ public class GUI extends JPanel {
          
          
          
-         JButton startButton = new JButton("Start");
+         JButton browseButton = new JButton("Browse");
          
          
          f.addWindowListener(new WindowAdapter() {
@@ -27,6 +27,7 @@ public class GUI extends JPanel {
       f.setContentPane(new GUI());
       f.setSize(400,400);
       f.setVisible(true);
+     
       f.add(fileChooser, BorderLayout.NORTH);
       fileChooser.addActionListener(new ActionListener(){
     	  public void actionPerformed(ActionEvent e) {
@@ -35,6 +36,6 @@ public class GUI extends JPanel {
     		  }
     	  }
       });
-      f.add(startButton);
+      f.add(browseButton);
    }
 }
