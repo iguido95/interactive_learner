@@ -7,7 +7,7 @@ public class TxtReader {
 	TxtReader() {
 	}
 
-	public ArrayList readTxt(String filepath) throws FileNotFoundException {
+	public static ArrayList readTxt(String filepath) throws FileNotFoundException {
 		Scanner s = new Scanner(new File(filepath));
 		ArrayList<String> list = new ArrayList<String>();
 		while (s.hasNext()) {
@@ -18,56 +18,52 @@ public class TxtReader {
 	}
 
 	// Replaces uppercase letters with lowercase and removes punctuation.
-	public ArrayList normalize(ArrayList<String> list) {
+	/**
+	 * Normalizes each word in an array list with our own rules
+	 * Chosen is to only allow letters and numbers. Not other characters
+	 * This is because eg. "Hello," and "Hello" would be totally different 
+	 * words to the program and should be the same.
+	 * @param list
+	 * @return
+	 */
+	public static ArrayList normalize(ArrayList<String> list) {
 		ArrayList<String> normalizedList = new ArrayList<String>();
 
 		for (String word : list) {
 			String normalizedWord = word.toLowerCase();
-			normalizedWord = normalizedWord.replace(",", "");
-			normalizedWord = normalizedWord.replace(".", "");
-			normalizedWord = normalizedWord.replace(";", "");
-			normalizedWord = normalizedWord.replace(":", "");
-			normalizedWord = normalizedWord.replace("/", "");
-			normalizedWord = normalizedWord.replace("+", "");
-			normalizedWord = normalizedWord.replace("!", "");
-			normalizedWord = normalizedWord.replace("?", "");
-			normalizedWord = normalizedWord.replace("(", "");
-			normalizedWord = normalizedWord.replace(")", "");
-			normalizedWord = normalizedWord.replace("{", "");
-			normalizedWord = normalizedWord.replace("}", "");
-			normalizedWord = normalizedWord.replace("[", "");
-			normalizedWord = normalizedWord.replace("]", "");
-			normalizedWord = normalizedWord.replace("<", "");
-			normalizedWord = normalizedWord.replace(">", "");
-			normalizedWord = normalizedWord.replace("%", "");
-			normalizedWord = normalizedWord.replace(" ", "");
-			normalizedWord = normalizedWord.replace("'", "");
-			normalizedWord = normalizedWord.replace("-", "");
+			normalizedWord = normalizedWord.replaceAll("[^a-zA-Z0-9]", "");
 
 			if (!normalizedWord.equals("")) {
 				normalizedList.add(normalizedWord);
 			}
 		}
+		//System.out.println(normalizedList);
 		return normalizedList;
 	}
 
+	/**
+	 * Reads a filename and splits it at the "-" sign. The word before the "-"
+	 * sign is used as the categoryName.
+	 * @param file
+	 * @return the category as a string
+	 */
 	// Reads a filename and splits it at the "-" sign. The word before the "-"
 	// sign is used as the categoryName
-	public String getCategoryName(File file) {
+	public static String getCategoryName(File file) {
 		String filename = file.getName();
 		String categoryName = filename.split("-")[0];
 		return categoryName;
 	}
 
-	// Reads all .txt files from a given directory and returns the text in an
-	// array and the classification category
+
 	/**
-	 * Reads all the files in a given directory to output a tokenized and normalized format
+	 * Reads all the files in a given directory to output a tokenized and normalized format and returns the text in an
+	 * array and the classification category
 	 * Training file should be of format: "CLASSNAME-rest.txt"
 	 * @param directoryPath - directory where all the training files are
 	 * @return Arraylist of tuples containing a String of the category name and a arraylist of all the tokens
 	 */
-	public ArrayList<Tuple<String, ArrayList<String>>> importAll(String directoryPath) {
+	public static ArrayList<Tuple<String, ArrayList<String>>> importAll(String directoryPath) {
 		// Voorbeeld: Tuple<"F", [hoi, ik, ben, een, blogger]>
 		ArrayList<Tuple<String, ArrayList<String>>> listAll = new ArrayList<Tuple<String, ArrayList<String>>>();
 
@@ -92,6 +88,11 @@ public class TxtReader {
 		}
 		return listAll;
 	}
+	
+	/**
+	 * Reads one file, normlizes and tokenizes it and returns the tokens as an arrayList
+	 */
+	
 	
 	public static void main(String[] args) {
 		TxtReader tr = new TxtReader();
