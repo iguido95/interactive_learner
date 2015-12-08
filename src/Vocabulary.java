@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * THe collection of words in a training set or a category
@@ -6,82 +7,67 @@ import java.util.ArrayList;
  *
  */
 public class Vocabulary {
-	private ArrayList<Word> vocabulary = new ArrayList<Word>();
-	
-	
+	//private ArrayList<Word> vocabulary = new ArrayList<Word>();
+
+	private HashMap<String, Integer> vocabulary = new HashMap<String, Integer>();
+
+
 	/**
 	 * @return the number of distinct words in this vocabulary
 	 */
 	public int countDistinctWords() {
 		return vocabulary.size();
 	}
-	
+
 	/**
 	 * Also keeps in mind the count per word
-	 * @return the number of all words in this vocabulary 
+	 * @return the number of all words in this vocabulary
 	 */
 	public int countTotalWords() {
 		int counter = 0;
-		for (Word w : this.vocabulary) {
-			counter += w.count();
+		for (String word : this.vocabulary.keySet()) {
+			counter += this.vocabulary.get(word);
 		}
 		return counter;
 	}
-	
+
 	/**
 	 * Searches the word in the vocabulary and returns its count
 	 * @param given_word
 	 * @return
 	 */
-	public int countByWord(String given_word) {
+	public int countByWord(String givenWord) {
 		int counter = 0;
-		Word word = searchWord(given_word);
-		if (word != null) {
-			counter = word.count();
+		if (this.vocabulary.get(givenWord) != null) {
+			counter = this.vocabulary.get(givenWord);
 		}
-			
 		return counter;
 	}
-	
+
 	/**
 	 * Adds a given word, from the normalized and tokenized document,
 	 * to this word vocabulary. If already exists in the vocabulary it
 	 * increments the count of this word with 1.
 	 * @param given_word - A normalized and tokenized string from the training txt file
 	 */
-	public void addWord(String given_word) {
-		boolean found = false;
-		for (Word w : this.vocabulary) {
-			if (w.name().equals(given_word)) {
-				w.incrementCount();
-				found = true; //TODO stop for loop when found
-				if (found) {
-					break;
-				}
+	public void addWord(String givenWord) {
+			if (this.vocabulary.get(givenWord) != null) {
+				int currentCount = this.vocabulary.get(givenWord);
+				this.vocabulary.put(givenWord, currentCount + 1);
+			} else {
+				this.vocabulary.put(givenWord, 1);
 			}
-		}
-		
-		if (!found) {
-			Word w = new Word(given_word);
-			this.vocabulary.add(w);
+	}
+
+	/**
+	 * Adds multiple words and their count to this vocabulary
+	 * @param givenWords
+	 */
+	public void addWords(ArrayList<String> givenWords) {
+		for (String word : givenWords) {
+			this.addWord(word);
 		}
 	}
-	
-	public void addWords(ArrayList<String> given_words) {
-		for (String w : given_words) {
-			this.addWord(w);
-		}
-	}
-	
-	private Word searchWord(String searchName) {
-		Word resultWord = null;
-		for (Word word : vocabulary) {
-			if (word.name().equals(searchName)) {
-				resultWord = word;
-			}
-		}
-		return resultWord;
-	}
-	
-	
+
+
 }

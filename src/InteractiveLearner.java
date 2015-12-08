@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class Starter {
+public class InteractiveLearner {
 	
 	/**
 	 * Just start this without any configuration
