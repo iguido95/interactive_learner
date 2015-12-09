@@ -12,10 +12,10 @@ import exceptions.NoDirectoryException;
  */
 public class Categories {
 	
-	
+	//The vocabulary of all the loaded documents, needed for k-smoothing
 	Vocabulary totalVocabulary = new Vocabulary();
+	//All the categories or classes in the bayesian network
 	ArrayList<Category> categories = new ArrayList<Category>();
-	ArrayList<Tuple<String, ArrayList<String>>> trainingData;
 	
 	
 	/**
@@ -63,7 +63,8 @@ public class Categories {
 	}
 	
 	/**
-	 * 
+	 * Same as predictCategory, but now a file can be used as parameter
+	 * instead of an ArrayList
 	 */
 	public Category predictCategoryByFile(String testFilePath) throws FileNotFoundException {
 		ArrayList<String> testDoc = null;
