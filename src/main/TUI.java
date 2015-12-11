@@ -14,7 +14,7 @@ public class TUI {
 		Scanner s = new Scanner(System.in);
 		String trainingPath = s.next();
 		System.out.println("You have provided " + trainingPath + " as training set directory");
-		System.out.println("Please wait. The AI is learning ...");
+		System.out.println("Please wait. The AI agent is learning ...");
 		return trainingPath;
 	}
 	

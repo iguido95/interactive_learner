@@ -38,6 +38,9 @@ public class Categories {
 			this.totalVocabulary.addWords(tokens);
 		}
 		System.out.println("Bayesian network has been created!");
+		//Kilian gedeelte
+		totalVocabulary.featureSelection(0.001);
+		
 	}
 	
 	/**

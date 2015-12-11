@@ -69,6 +69,30 @@ public class Vocabulary {
 			this.addWord(word);
 		}
 	}
+	
+	//Experimenteel gedeelte
+	
+	public void featureSelection(double percentage) {
+		int count = 0;
+		int totalwords = this.countTotalWords();
+		System.out.println("Amount of words before feature selection: " + totalwords);
+		double limit = percentage*totalwords;
+		HashMap<String, Integer> copy = new HashMap<String, Integer>();
+		copy.putAll(this.vocabulary); //Zet alle mappings van vocabulary in copy
+		
+		for (String word : this.vocabulary.keySet()) {
+			if (this.vocabulary.get(word) < limit) {
+				copy.remove(word);
+				count ++;
+				//System.out.println(word + " REMOVED");
+			} 
+		}
+		this.vocabulary.clear(); //Maakt de orginele vocabulary leeg
+		this.vocabulary.putAll(copy); //Zet alle mappings van copy zonder verwijderde mappings terug in vocabulary
+		System.out.println(count + " words are removed from the vocabulary");
+		System.out.println("Amount of words after feature selection: " + this.countTotalWords());
+		System.out.println("Feature selection completed!");
+	}
 
 
 }
