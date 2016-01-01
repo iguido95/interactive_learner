@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import main.Categories;
 import main.Category;
+import main.ChiSquared;
 import main.TxtReader;
 
 import org.junit.Test;
@@ -47,17 +48,19 @@ public class TestPredictionAccuracy {
 		}
 		
 		double accuracy = (double) positivePredictedCount / (double) totalFileCount;
+				
 		return accuracy;
 	}
 
 	public static void main(String[] argv) throws NoDirectoryException, FileNotFoundException {
+		ChiSquared.critialChiValue = 3.8;
+		Category.k_smoothingFactor = 1;
+		
 		DecimalFormat percentage = new DecimalFormat("#0.0%");
 		
-		TestPredictionAccuracy test = new TestPredictionAccuracy("blogs/TRAINING");		
-		
-		System.out.println("Accuracy for Female: " + percentage.format(test.testPrediction("blogs/F")));
-		System.out.println("Accuracy for Male: " + percentage.format(test.testPrediction("blogs/M")));
-		System.out.println("Accuracy for both: " + percentage.format(test.testPrediction("mails/TEST")));
+		TestPredictionAccuracy test = new TestPredictionAccuracy("blogs/train");		
+		System.out.println("Accuracy: " + percentage.format(test.testPrediction("blogs/test")));
+
 
 
 	}

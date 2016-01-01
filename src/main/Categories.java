@@ -1,6 +1,8 @@
 package main;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import exceptions.NoDirectoryException;
 
@@ -38,9 +40,27 @@ public class Categories {
 			this.totalVocabulary.addWords(tokens);
 		}
 		System.out.println("Bayesian network has been created!");
-		//Kilian gedeelte
-		totalVocabulary.featureSelection(0.001);
 		
+		System.out.println("Started Chi-Squared Feature Selection...");
+		ChiSquared.calculateChiSquareValue(categories, totalVocabulary);
+		
+		System.out.println("Current total vocabulary: " + totalVocabulary.countDistinctWords() + " (" + totalVocabulary.countTotalWords() + ")");
+		calculateNewTotalVocabulary();
+		System.out.println("New total vocabulary: " + totalVocabulary.countDistinctWords() + " (" + totalVocabulary.countTotalWords() + ")");
+
+		System.out.println("Feature Selection has been completed!");
+	
+		
+		
+	}
+	
+	public void calculateNewTotalVocabulary() {
+		this.totalVocabulary = new Vocabulary();
+		for(Category c : this.categories) {
+			for (String word : c.vocabulary.vocabulary.keySet()) {
+				this.totalVocabulary.addWordWithCount(word, c.vocabulary.vocabulary.get(word));
+			}
+		}
 	}
 	
 	/**
@@ -55,8 +75,8 @@ public class Categories {
 		Category maxCategory = null;
 		for (Category cat : this.categories) {
 			double prob = cat.getProbability(testDocument, this.getTotalDocumentCount(), this.totalVocabulary);
-			//System.out.println("Category: " + cat.name());
-			//System.out.println(prob + " > " + highestProb + " = " + (prob > highestProb));
+//			System.out.println("Category: " + cat.name());
+//			System.out.println(prob + " > " + highestProb + " = " + (prob > highestProb));
 			if (prob > highestProb) {
 				highestProb = prob;
 				maxCategory = cat;

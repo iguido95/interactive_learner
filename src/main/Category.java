@@ -7,10 +7,13 @@ import java.util.ArrayList;
  *
  */
 public class Category {
+	
+	public static int k_smoothingFactor = 1;
+	
 	//Name of this category eg. Male or Female
 	private String name;
 	//The vocabulary of this category. All the distinct words and their occurences.
-	private Vocabulary vocabulary;
+	public Vocabulary vocabulary;
 	//The number of documents given to this category to train
 	private int number_of_documents;
 	
@@ -38,26 +41,28 @@ public class Category {
 	 * Loops through all the words/tokens in the test-document and calculates
 	 * the conditional probability. 
 	 * P(X=[all words xi]| C = this_class)
-	 * @return log10 of the probalility
+	 * @return log10 of the probability
 	 */
 	public double getProbability(ArrayList<String> tokens, int countTotalDocuments, Vocabulary totalTrainVocabulary) {
-		double probability = 0;
+		double firstTerm = 0;
 		// P(C= this_class) = (Number of documents with this_class) / (Number of total documents)
 		//The first part of the multinomial formula; The probability of this class.
-		probability = (double)this.number_of_documents() / (double)countTotalDocuments;
-		probability = Math.log10(probability);
+		firstTerm = (double)this.number_of_documents() / (double)countTotalDocuments;
+		firstTerm = Math.log10(firstTerm) / Math.log(2.0);
 		
-/**		System.out.println("-----------");
-		System.out.println("no of documents category: " + this.number_of_documents());
-		System.out.println("total documents: " + countTotalDocuments);
-		System.out.println("* prob of C= " + this.name() + " " + String.valueOf(probability) + "\n-----------"); 
-**/
+//		System.out.println("-----------");
+//		System.out.println("no of documents category: " + this.number_of_documents());
+//		System.out.println("total documents: " + countTotalDocuments);
+//		System.out.println("* prob of C= " + this.name() + " " + String.valueOf(firstTerm) + "\n-----------"); 
+
 		
 		// the second part of the multinomial formula; The probability of a word given this class. Gesommeerd.
+		int totalWords = this.vocabulary.countTotalWords();
+		double secondTerm = 0.0;
 		for (String token : tokens) {
-			probability += this.getConditionalProbability(token, totalTrainVocabulary);
+			secondTerm += this.getConditionalProbability(token, totalTrainVocabulary, totalWords);
 		}
-		return probability;
+		return firstTerm + secondTerm;
 	}
 	
 	/**
@@ -68,16 +73,15 @@ public class Category {
 	 * @param totalTrainVocabulary
 	 * @return log10 of the conditional probability
 	 */
-	public double getConditionalProbability(String given_word, Vocabulary totalTrainVocabulary) { 
-		//TODO hardcoded k=1!
+	public double getConditionalProbability(String given_word, Vocabulary totalTrainVocabulary, int totalWords) { 
 //		System.out.println("*" + given_word + " " + this.vocabulary.countByWord(given_word));
-		int k = 1;
+		int k = k_smoothingFactor;
 		double teller = (this.vocabulary.countByWord(given_word) + k);
-		double noemer = (this.vocabulary.countDistinctWords() + (k*totalTrainVocabulary.countDistinctWords()));
-		double conditionalProb = Math.log(teller / noemer);
-//		System.out.println("teller: " + teller);
-//		System.out.println("noemer: " + noemer);
-//		System.out.println("totaal: " + conditionalProb);
+		double noemer = (totalWords + (k*totalTrainVocabulary.countDistinctWords()));
+		double conditionalProb = Math.log10((teller / noemer)) / Math.log10(2.0);
+
+//		System.out.println("(" + this.vocabulary.countByWord(given_word) + " + " + k + ") / (" + this.vocabulary.countTotalWords() + " + " + (k*totalTrainVocabulary.countDistinctWords()) + ")"  );
+//		System.out.println("Word :" + given_word + " - totaal: " + conditionalProb + " (teller: " + teller + " | noemer: " + noemer + ")");
 
 		return conditionalProb;
 	}

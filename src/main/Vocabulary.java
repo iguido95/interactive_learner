@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class Vocabulary {
 	//private ArrayList<Word> vocabulary = new ArrayList<Word>();
 
-	private HashMap<String, Integer> vocabulary = new HashMap<String, Integer>();
+	public HashMap<String, Integer> vocabulary = new HashMap<String, Integer>();
 
 
 	/**
@@ -59,6 +59,21 @@ public class Vocabulary {
 				this.vocabulary.put(givenWord, 1);
 			}
 	}
+	
+	/**
+	 * Adds a given word, from the normalized and tokenized document,
+	 * to this word vocabulary. If already exists in the vocabulary it
+	 * increments the count of this word with the given count.
+	 * @param given_word - A normalized and tokenized string from the training txt file
+	 */
+	public void addWordWithCount(String givenWord, int count) {
+		if (this.vocabulary.get(givenWord) != null) {
+			int currentCount = this.vocabulary.get(givenWord);
+			this.vocabulary.put(givenWord, currentCount + count);
+		} else {
+			this.vocabulary.put(givenWord, count);
+		}	
+	}
 
 	/**
 	 * Adds multiple words and their count to this vocabulary
@@ -70,29 +85,38 @@ public class Vocabulary {
 		}
 	}
 	
+	public String toString() {
+		String output = "";
+		for (String word : this.vocabulary.keySet()) {
+			output += (word + ", ");
+		}
+		
+		return output;
+	}
+	
 	//Experimenteel gedeelte
 	
-	public void featureSelection(double percentage) {
-		int count = 0;
-		int totalwords = this.countTotalWords();
-		System.out.println("Amount of words before feature selection: " + totalwords);
-		double limit = percentage*totalwords;
-		HashMap<String, Integer> copy = new HashMap<String, Integer>();
-		copy.putAll(this.vocabulary); //Zet alle mappings van vocabulary in copy
-		
-		for (String word : this.vocabulary.keySet()) {
-			if (this.vocabulary.get(word) < limit) {
-				copy.remove(word);
-				count ++;
-				//System.out.println(word + " REMOVED");
-			} 
-		}
-		this.vocabulary.clear(); //Maakt de orginele vocabulary leeg
-		this.vocabulary.putAll(copy); //Zet alle mappings van copy zonder verwijderde mappings terug in vocabulary
-		System.out.println(count + " words are removed from the vocabulary");
-		System.out.println("Amount of words after feature selection: " + this.countTotalWords());
-		System.out.println("Feature selection completed!");
-	}
+//	public void featureSelection(double percentage) {
+//		int count = 0;
+//		int totalwords = this.countTotalWords();
+//		System.out.println("Amount of words before feature selection: " + totalwords);
+//		double limit = percentage*totalwords;
+//		HashMap<String, Integer> copy = new HashMap<String, Integer>();
+//		copy.putAll(this.vocabulary); //Zet alle mappings van vocabulary in copy
+//		
+//		for (String word : this.vocabulary.keySet()) {
+//			if (this.vocabulary.get(word) < limit) {
+//				copy.remove(word);
+//				count ++;
+//				//System.out.println(word + " REMOVED");
+//			} 
+//		}
+//		this.vocabulary.clear(); //Maakt de orginele vocabulary leeg
+//		this.vocabulary.putAll(copy); //Zet alle mappings van copy zonder verwijderde mappings terug in vocabulary
+//		System.out.println(count + " words are removed from the vocabulary");
+//		System.out.println("Amount of words after feature selection: " + this.countTotalWords());
+//		System.out.println("Feature selection completed!");
+//	}
 
 
 }
