@@ -53,13 +53,13 @@ public class TestPredictionAccuracy {
 	}
 
 	public static void main(String[] argv) throws NoDirectoryException, FileNotFoundException {
-		ChiSquared.critialChiValue = 3.8;
+		ChiSquared.critialChiValue = 0.0;
 		Category.k_smoothingFactor = 1;
 		
 		DecimalFormat percentage = new DecimalFormat("#0.0%");
 		
-		TestPredictionAccuracy test = new TestPredictionAccuracy("blogs/train");		
-		System.out.println("Accuracy: " + percentage.format(test.testPrediction("blogs/test")));
+		TestPredictionAccuracy test = new TestPredictionAccuracy("reuter/train");		
+		System.out.println("Accuracy: " + percentage.format(test.testPrediction("reuter/test")));
 
 
 

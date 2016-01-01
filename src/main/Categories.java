@@ -42,9 +42,11 @@ public class Categories {
 		System.out.println("Bayesian network has been created!");
 		
 		System.out.println("Started Chi-Squared Feature Selection...");
+		//Feature Selection
 		ChiSquared.calculateChiSquareValue(categories, totalVocabulary);
 		
 		System.out.println("Current total vocabulary: " + totalVocabulary.countDistinctWords() + " (" + totalVocabulary.countTotalWords() + ")");
+		//Also update the totalVocabulary
 		calculateNewTotalVocabulary();
 		System.out.println("New total vocabulary: " + totalVocabulary.countDistinctWords() + " (" + totalVocabulary.countTotalWords() + ")");
 
@@ -54,6 +56,12 @@ public class Categories {
 		
 	}
 	
+	/**
+	 * Used for the feature selection
+	 * After each category has been recomposed, words from the vocabulary have been deleted,
+	 * the total vocabulary (of all categories together) has to be updated too. It counts for each
+	 * category the number of words and adds them to the total vocabulary
+	 */
 	public void calculateNewTotalVocabulary() {
 		this.totalVocabulary = new Vocabulary();
 		for(Category c : this.categories) {
