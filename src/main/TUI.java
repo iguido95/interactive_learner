@@ -102,7 +102,7 @@ public class TUI {
 			} else if (categories.isValidCategoryName(userInput)) {
 				categoryName = userInput;
 			} else {
-				System.err.println("This is not an existing category or command! Try again.");
+				System.out.println("This is not an existing category or command! Try again.");
 			}
 		}
 		

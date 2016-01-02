@@ -16,6 +16,7 @@ public class InteractiveLearner {
 		ChiSquared.critialChiValue = 0.0;
 		Category.k_smoothingFactor = 1;
 		
+		//Update de standaard parameters als de gebruiker dat wil 
 		if (TUI.wantsToSetParameters()) {			
 			boolean exceptionGiven = true;
 			while(exceptionGiven) {
