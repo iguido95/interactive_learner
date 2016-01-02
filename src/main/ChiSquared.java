@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class ChiSquared {
 	
-	public static double critialChiValue = 0.5;
+	public static double critialChiValue = 3.9;
 	
 	
 //	public static double calculateChiSquareValue(ArrayList<Category> categories, Vocabulary totalVocabulary) {

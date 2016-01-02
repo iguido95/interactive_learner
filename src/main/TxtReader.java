@@ -98,6 +98,28 @@ public class TxtReader {
 		return listAll;
 	}
 	
+	/**
+	 * Imports one file. Converts it to our specified data type. Like importAll
+	 * @param argv
+	 */
+	public static ArrayList<Tuple<String, ArrayList<String>>> importForRetraining(String filePath, String categoryName) {
+		ArrayList<Tuple<String, ArrayList<String>>> listAll = new ArrayList<Tuple<String, ArrayList<String>>>();
+		
+		File file = new File(filePath);
+		//DS_Store is a specific mac file that messes things up. Skip that file
+		try {
+			ArrayList<String> normalizedArrayList = normalize(readTxt(file.getAbsolutePath()));
+			String category = categoryName;
+	
+			// Zet array en category in een tupel
+			listAll.add(new Tuple<String, ArrayList<String>>(category, normalizedArrayList));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return listAll;
+	}
+	
 
 	public static void main(String[] argv) {
 

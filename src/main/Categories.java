@@ -50,10 +50,34 @@ public class Categories {
 		calculateNewTotalVocabulary();
 		System.out.println("New total vocabulary: " + totalVocabulary.countDistinctWords() + " (" + totalVocabulary.countTotalWords() + ")");
 
-		System.out.println("Feature Selection has been completed!");
+		System.out.println("Feature Selection has been completed!");	
+	}
 	
+	/**
+	 * Intended to Retrain the classifier by adding a new file to the network
+	 * @param filePath
+	 * @param intendedCategoryName
+	 */
+	public void addTrainingFile(String filePath, String intendedCategoryName) {
+		ArrayList<Tuple<String, ArrayList<String>>> trainingData = (new TxtReader()).importForRetraining(filePath, intendedCategoryName);
+		System.out.println("... Updating Bayesian network");
+		System.out.println("Current total vocabulary: " + totalVocabulary.countDistinctWords() + " (" + totalVocabulary.countTotalWords() + ")");
+
+		for (Tuple<String, ArrayList<String>> tuple : trainingData) {
+			String categoryName = tuple.x;
+			ArrayList<String> tokens = tuple.y;
+			Category category = this.getCategory(categoryName);
+			category.addDocument(tokens);
+			this.totalVocabulary.addWords(tokens);
+		}
+		//Feature Selection
+
+		ChiSquared.calculateChiSquareValue(categories, totalVocabulary);
+		calculateNewTotalVocabulary();
 		
-		
+		System.out.println("New total vocabulary: " + totalVocabulary.countDistinctWords() + " (" + totalVocabulary.countTotalWords() + ")");
+
+		System.out.println("Done updating Bayesian network!");
 	}
 	
 	/**
@@ -159,6 +183,29 @@ public class Categories {
 			counter += cat.number_of_documents();
 		}
 		return counter;
+	}
+	
+	
+	/**
+	 * Checks if the given category name exists in the list of categories;
+	 */
+	public boolean isValidCategoryName(String name) {
+		boolean isValid = false;
+		for(Category c : this.categories) {
+			if (name != null && name.equals(c.name())) {
+				isValid = true;
+			}
+		}
+		
+		return isValid;
+	}
+	
+	public String toString() {
+		String output = "";
+		for(Category c : this.categories) {
+			output += c.toString() + ", ";
+		}
+		return output;
 	}
 	
 	

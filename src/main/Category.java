@@ -107,4 +107,8 @@ public class Category {
 		this.vocabulary.addWord(word);
 	}
 	
+	public String toString() {
+		return this.name;
+	}
+	
 }
