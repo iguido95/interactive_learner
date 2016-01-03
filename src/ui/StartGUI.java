@@ -74,6 +74,7 @@ public class StartGUI extends JPanel {
 					int newValue = Integer.parseInt(kValueField.getText());
 					if (newValue >= 1) {
 						kValue = newValue;
+						System.out.println("New k-value: " + kValue);
 					} else {
 						kValueField.setText("" + kValue);
 					}
@@ -93,6 +94,7 @@ public class StartGUI extends JPanel {
 							.getText());
 					if (newValue >= 0.0) {
 						chiValue = newValue;
+						System.out.println("New chi2-value: " + chiValue);
 					} else {
 						chiValueField.setText("" + chiValue);
 					}
@@ -137,6 +139,8 @@ public class StartGUI extends JPanel {
 					System.out.println(file.getAbsolutePath());
 					directoryLabel.setText(file.getAbsolutePath());
 					trainDirectoryPath = file.getAbsolutePath();
+					
+					trainClassifierButton.setEnabled(true);
 				} else {
 					// log.append("Open command cancelled by user." + newline);
 				}
