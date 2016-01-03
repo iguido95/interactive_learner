@@ -2,6 +2,8 @@ package ui;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import exceptions.NoDirectoryException;
 import main.Categories;
@@ -20,8 +22,20 @@ public class StartGUI extends JPanel {
 	int kValue = 1;
 	String trainDirectoryPath = "";
 	Categories categories;
+	String[] categoryNames = {};
 	
 	String testFilePath = "";
+	
+	String selectedCategoryName = "";
+	
+	//UI Elements
+	JButton trainClassifierButton = new JButton("Train Classifier");
+	JButton chooseFileToClassifyButton = new JButton("Choose Txt File...");
+	JButton classifyFileButton = new JButton("Classify File");
+	final JLabel classyfiedAsLabel = new JLabel();
+	JList categoryNamesList = new JList();
+	final JTextField customCategoryField = new JTextField(12);
+	JButton reclassifyFileButton = new JButton("Re-Classify File");
 	
 
 	public StartGUI() {
@@ -41,6 +55,7 @@ public class StartGUI extends JPanel {
 		testClassifierTab.setLayout(new BoxLayout(testClassifierTab, BoxLayout.PAGE_AXIS));
 		testClassifierTab.add(createFileChooserRow());
 		testClassifierTab.add(predictCategoryRow());
+		testClassifierTab.add(retrainClassifierRow());
 		tabbedPane.addTab("Use the Classifier", testClassifierTab);
 		
 
@@ -88,7 +103,7 @@ public class StartGUI extends JPanel {
 		});
 
 		JPanel pane = new JPanel();
-		Dimension size = new Dimension(500, 100);
+		Dimension size = new Dimension(600, 100);
 		pane.setMaximumSize(size);
 		pane.setPreferredSize(size);
 		pane.setMinimumSize(size);
@@ -134,7 +149,7 @@ public class StartGUI extends JPanel {
 		pane.setBorder(BorderFactory
 				.createTitledBorder("Training Data Directory"));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
-		Dimension size = new Dimension(500, 100);
+		Dimension size = new Dimension(600, 100);
 		pane.setMaximumSize(size);
 		pane.setPreferredSize(size);
 		pane.setMinimumSize(size);
@@ -146,9 +161,9 @@ public class StartGUI extends JPanel {
 
 	protected JPanel createTrainClassifierRow() {
 
-		JButton button1 = new JButton("Train Classifier");
+		
 		final JLabel informationLabel = new JLabel();
-		button1.addActionListener(new ActionListener() {
+		trainClassifierButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Start Classifier!");
 				startClassifier(informationLabel);
@@ -158,11 +173,11 @@ public class StartGUI extends JPanel {
 		JPanel pane = new JPanel();
 		pane.setBorder(BorderFactory.createTitledBorder("Train Classifier"));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
-		Dimension size = new Dimension(500, 100);
+		Dimension size = new Dimension(600, 100);
 		pane.setMaximumSize(size);
 		pane.setPreferredSize(size);
 		pane.setMinimumSize(size);
-		pane.add(button1);
+		pane.add(trainClassifierButton);
 		pane.add(informationLabel);
 		return pane;
 	}
@@ -174,19 +189,23 @@ public class StartGUI extends JPanel {
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
 		final JLabel directoryLabel = new JLabel();
-
-		JButton openButton = new JButton("Choose Txt File To Classify...");
-		openButton.addActionListener(new ActionListener() {
+		
+		chooseFileToClassifyButton.setEnabled(false);
+		chooseFileToClassifyButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				int returnVal = fc.showOpenDialog(null);
 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					classyfiedAsLabel.setText("");
 					File file = fc.getSelectedFile();
 					// This is where a real application would open the file.
 					System.out.println(file.getAbsolutePath());
 					directoryLabel.setText(file.getAbsolutePath());
 					testFilePath = file.getAbsolutePath();
+					trainClassifierButton.setEnabled(true);
+					categoryNamesList.setEnabled(false);
+					customCategoryField.setEnabled(false);
 				} else {
 					// log.append("Open command cancelled by user." + newline);
 				}
@@ -198,43 +217,112 @@ public class StartGUI extends JPanel {
 		JPanel pane = new JPanel();
 		pane.setBorder(BorderFactory
 				.createTitledBorder("File to classify"));
-		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-		Dimension size = new Dimension(500, 100);
+		pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
+		Dimension size = new Dimension(600, 100);
 		pane.setMaximumSize(size);
 		pane.setPreferredSize(size);
 		pane.setMinimumSize(size);
-		pane.add(openButton);
+		pane.add(chooseFileToClassifyButton);
 		pane.add(directoryLabel);
 
 		return pane;
 	}
 	
 	protected JPanel predictCategoryRow() {
-
-		JButton button1 = new JButton("Classify File");
-		final JLabel informationLabel = new JLabel();
-		button1.addActionListener(new ActionListener() {
+		classifyFileButton.setEnabled(false);
+		classifyFileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Category predictedCategory = categories.predictCategoryByFile(testFilePath);
 					String predictedName = "<html><br><b>Predicted Category:</b><br><h2>" + predictedCategory.name() + "</h2></html>";
-					informationLabel.setText(predictedName);
+					classyfiedAsLabel.setText(predictedName);
+					customCategoryField.setEnabled(true);
+					categoryNamesList.setEnabled(true);
 				} catch (FileNotFoundException e1) {
+					customCategoryField.setEnabled(false);
+					categoryNamesList.setEnabled(false);
 					e1.printStackTrace();
-					informationLabel.setText("File Not Found!");
+					classyfiedAsLabel.setText("File Not Found!");
 				}
 			}
 		});
 
 		JPanel pane = new JPanel();
-		pane.setBorder(BorderFactory.createTitledBorder("Train Classifier"));
-		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-		Dimension size = new Dimension(500, 300);
+		pane.setBorder(BorderFactory.createTitledBorder("Classify File"));
+		pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
+		Dimension size = new Dimension(600, 150);
 		pane.setMaximumSize(size);
 		pane.setPreferredSize(size);
 		pane.setMinimumSize(size);
-		pane.add(button1);
-		pane.add(informationLabel);
+		pane.add(classifyFileButton);
+		pane.add(classyfiedAsLabel);
+		return pane;
+	}
+	
+	
+	protected JPanel retrainClassifierRow() {
+
+		//Category Chooser JPanel
+		categoryNamesList.setListData(this.categoryNames);
+		categoryNamesList.setEnabled(false);
+		categoryNamesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		categoryNamesList.addListSelectionListener(new ListSelectionListener() {
+	      public void valueChanged(ListSelectionEvent le) {
+	        int idx = categoryNamesList.getSelectedIndex();
+	        if (idx != -1) {
+	        	selectedCategoryName = categoryNames[idx];
+	        	System.out.println("Current selection: " + selectedCategoryName);
+	        	customCategoryField.setText("");
+	        	reclassifyFileButton.setEnabled(true);
+	        } else {
+	        	reclassifyFileButton.setEnabled(false);
+	          //System.out.println("Please choose a language.");
+	        }
+	      }
+	    });	
+		
+		
+		//Custom Category Input Field
+		customCategoryField.setEnabled(false);
+		JLabel customCategoryLabel = new JLabel("Or New Category:");
+		customCategoryField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (customCategoryField.getText().length() > 0) {
+					selectedCategoryName = customCategoryField.getText();
+					System.out.println("Current selection: " + selectedCategoryName);
+					categoryNamesList.clearSelection();
+					reclassifyFileButton.setEnabled(true);
+				}
+			}
+		});
+		
+		//Reclassify Button		
+		reclassifyFileButton.setEnabled(false);
+		reclassifyFileButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				categories.addTrainingFile(testFilePath, selectedCategoryName);
+				System.out.println(testFilePath);
+				System.out.println(selectedCategoryName);
+				System.out.println("Re-Classify!");
+				reclassifyFileButton.setEnabled(false);
+				customCategoryField.setText("");
+				//Update the category name list
+				categoryNames = categories.getNames();
+				categoryNamesList.setListData(categoryNames);
+			}
+		});
+
+		JPanel pane = new JPanel();
+		pane.setBorder(BorderFactory.createTitledBorder("Retrain The Classifier, select the desired category:"));
+		pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
+		Dimension size = new Dimension(600, 300);
+		pane.setMaximumSize(size);
+		pane.setPreferredSize(size);
+		pane.setMinimumSize(size);
+		pane.add(new JScrollPane(categoryNamesList));
+		pane.add(customCategoryLabel);
+		pane.add(customCategoryField);
+		pane.add(reclassifyFileButton);
 		return pane;
 	}
 
@@ -275,8 +363,7 @@ public class StartGUI extends JPanel {
 			ChiSquared.critialChiValue = chiValue;
 			Category.k_smoothingFactor = kValue;
 		} catch (NumberFormatException e) {
-			informationLabel
-					.setText("This is not a correct number! Using default values...");
+			informationLabel.setText("This is not a correct number! Using default values...");
 		}
 
 		categories = new Categories();
@@ -284,9 +371,24 @@ public class StartGUI extends JPanel {
 			categories.addTrainingData(trainDirectoryPath);
 		} catch (NoDirectoryException e) {
 			informationLabel.setText("This is not a directory!");
+			chooseFileToClassifyButton.setEnabled(false);
+			customCategoryField.setEnabled(false);
+			categoryNamesList.setEnabled(false);
+			
+			classifyFileButton.setEnabled(false);
 			return;
 		}
 		informationLabel.setText("<html>Bayesian Network has been created!<br>Please go on to next tab to test it</html>");
+		
+		//Update the category name list
+		categoryNames = categories.getNames();
+		categoryNamesList.setListData(categoryNames);
+		
+		//Enable and disable elements
+		trainClassifierButton.setEnabled(false);
+		chooseFileToClassifyButton.setEnabled(true);
+		classifyFileButton.setEnabled(true);
+		reclassifyFileButton.setEnabled(false);
 	}
 
 }

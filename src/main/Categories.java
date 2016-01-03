@@ -200,6 +200,17 @@ public class Categories {
 		return isValid;
 	}
 	
+	public String[] getNames() {
+		String[] names = new String[this.categories.size()];
+		
+		int i = 0;
+		for(Category c : this.categories) {
+			names[i] = c.name();
+			i++;
+		}
+		return names;
+	}
+	
 	public String toString() {
 		String output = "";
 		for(Category c : this.categories) {
