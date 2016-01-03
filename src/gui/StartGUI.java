@@ -13,14 +13,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class StartGUI extends JPanel {
 
 	double chiValue = 0.0;
 	int kValue = 1;
 	String trainDirectoryPath = "";
-
 	Categories categories;
+	
+	String testFilePath = "";
+	
 
 	public StartGUI() {
 		super(new BorderLayout());
@@ -34,17 +37,13 @@ public class StartGUI extends JPanel {
 		buttonRow.add(createTrainClassifierRow());
 		tabbedPane.addTab("Initialize Classifier", buttonRow);
 
-		JPanel labelAndComponent = new JPanel();
+		JPanel testClassifierTab = new JPanel();
 		// Use default FlowLayout.
-		labelAndComponent.add(createLabelAndComponent(false));
-		labelAndComponent.add(createLabelAndComponent(true));
-		tabbedPane.addTab("X alignment mismatch", labelAndComponent);
-
-		JPanel buttonAndComponent = new JPanel();
-		// Use default FlowLayout.
-		buttonAndComponent.add(createYAlignmentExample(false));
-		buttonAndComponent.add(createYAlignmentExample(true));
-		tabbedPane.addTab("Y alignment mismatch", buttonAndComponent);
+		testClassifierTab.setLayout(new BoxLayout(testClassifierTab, BoxLayout.PAGE_AXIS));
+		testClassifierTab.add(createFileChooserRow());
+		testClassifierTab.add(predictCategoryRow());
+		tabbedPane.addTab("Use the Classifier", testClassifierTab);
+		
 
 		// Add tabbedPane to this panel.
 		add(tabbedPane, BorderLayout.CENTER);
@@ -168,84 +167,79 @@ public class StartGUI extends JPanel {
 		pane.add(informationLabel);
 		return pane;
 	}
+	
+	protected JPanel createFileChooserRow() {
 
-	protected JPanel createLabelAndComponent(boolean doItRight) {
+		// Create a file chooser
+		final JFileChooser fc = new JFileChooser();
+		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		final JLabel directoryLabel = new JLabel();
+
+		JButton openButton = new JButton("Choose Txt File To Classify...");
+		openButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				int returnVal = fc.showOpenDialog(null);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					// This is where a real application would open the file.
+					System.out.println(file.getAbsolutePath());
+					directoryLabel.setText(file.getAbsolutePath());
+					testFilePath = file.getAbsolutePath();
+				} else {
+					// log.append("Open command cancelled by user." + newline);
+				}
+
+			}
+
+		});
+
 		JPanel pane = new JPanel();
-
-		JComponent component = new JPanel();
-		Dimension size = new Dimension(150, 100);
-		component.setMaximumSize(size);
-		component.setPreferredSize(size);
-		component.setMinimumSize(size);
-		TitledBorder border = new TitledBorder(new LineBorder(Color.black),
-				"A JPanel", TitledBorder.CENTER, TitledBorder.BELOW_TOP);
-		border.setTitleColor(Color.black);
-		component.setBorder(border);
-
-		JLabel label = new JLabel("This is a JLabel");
-		String title;
-		if (doItRight) {
-			title = "Matched";
-			label.setAlignmentX(CENTER_ALIGNMENT);
-		} else {
-			title = "Mismatched";
-		}
-
-		pane.setBorder(BorderFactory.createTitledBorder(title));
+		pane.setBorder(BorderFactory
+				.createTitledBorder("File Chooser"));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-		pane.add(label);
-		pane.add(component);
+		Dimension size = new Dimension(500, 100);
+		pane.setMaximumSize(size);
+		pane.setPreferredSize(size);
+		pane.setMinimumSize(size);
+		pane.add(openButton);
+		pane.add(directoryLabel);
+
 		return pane;
 	}
+	
+	protected JPanel predictCategoryRow() {
 
-	protected JPanel createYAlignmentExample(boolean doItRight) {
+		JButton button1 = new JButton("Classify File");
+		final JLabel informationLabel = new JLabel();
+		button1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Category predictedCategory = categories.predictCategoryByFile(testFilePath);
+					String predictedName = "<html><br><b>Predicted Category:</b><br><h2>" + predictedCategory.name() + "</h2></html>";
+					informationLabel.setText(predictedName);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+					informationLabel.setText("File Not Found!");
+				}
+			}
+		});
+
 		JPanel pane = new JPanel();
-		String title;
-
-		JComponent component1 = new JPanel();
-		Dimension size = new Dimension(100, 50);
-		component1.setMaximumSize(size);
-		component1.setPreferredSize(size);
-		component1.setMinimumSize(size);
-		TitledBorder border = new TitledBorder(new LineBorder(Color.black),
-				"A JPanel", TitledBorder.CENTER, TitledBorder.BELOW_TOP);
-		border.setTitleColor(Color.black);
-		component1.setBorder(border);
-
-		JComponent component2 = new JPanel();
-		size = new Dimension(100, 50);
-		component2.setMaximumSize(size);
-		component2.setPreferredSize(size);
-		component2.setMinimumSize(size);
-		border = new TitledBorder(new LineBorder(Color.black), "A JPanel",
-				TitledBorder.CENTER, TitledBorder.BELOW_TOP);
-		border.setTitleColor(Color.black);
-		component2.setBorder(border);
-
-		if (doItRight) {
-			title = "Matched";
-		} else {
-			component1.setAlignmentY(TOP_ALIGNMENT);
-			title = "Mismatched";
-		}
-
-		pane.setBorder(BorderFactory.createTitledBorder(title));
-		pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
-		pane.add(component1);
-		pane.add(component2);
+		pane.setBorder(BorderFactory.createTitledBorder("Train Classifier"));
+		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+		Dimension size = new Dimension(500, 300);
+		pane.setMaximumSize(size);
+		pane.setPreferredSize(size);
+		pane.setMinimumSize(size);
+		pane.add(button1);
+		pane.add(informationLabel);
 		return pane;
 	}
 
-	/** Returns an ImageIcon, or null if the path was invalid. */
-	protected static ImageIcon createImageIcon(String path) {
-		java.net.URL imgURL = StartGUI.class.getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
-	}
+
 
 	/**
 	 * Create the GUI and show it. For thread safety, this method should be
@@ -295,4 +289,5 @@ public class StartGUI extends JPanel {
 		}
 		informationLabel.setText("<html>Bayesian Network has been created!<br>Please go on to next tab to test it</html>");
 	}
+
 }
