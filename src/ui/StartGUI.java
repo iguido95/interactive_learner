@@ -1,4 +1,4 @@
-package gui;
+package ui;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -7,7 +7,6 @@ import exceptions.NoDirectoryException;
 import main.Categories;
 import main.Category;
 import main.ChiSquared;
-import main.TUI;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -198,7 +197,7 @@ public class StartGUI extends JPanel {
 
 		JPanel pane = new JPanel();
 		pane.setBorder(BorderFactory
-				.createTitledBorder("File Chooser"));
+				.createTitledBorder("File to classify"));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 		Dimension size = new Dimension(500, 100);
 		pane.setMaximumSize(size);

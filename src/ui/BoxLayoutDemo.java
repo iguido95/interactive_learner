@@ -1,4 +1,4 @@
-package gui;
+package ui;
 
 import java.awt.Component;
 import java.awt.Container;

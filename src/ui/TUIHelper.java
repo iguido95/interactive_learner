@@ -1,10 +1,13 @@
-package main;
+package ui;
 import java.util.Scanner;
 
+import main.Categories;
+import main.Category;
 
-public class TUI {
+
+public class TUIHelper {
 	
-	public TUI() {	
+	public TUIHelper() {	
 	}
 	
 	public static final String EXIT = "EXIT";

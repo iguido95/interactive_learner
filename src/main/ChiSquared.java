@@ -6,39 +6,17 @@ import java.util.Map;
 
 public class ChiSquared {
 	
-	public static double critialChiValue = 3.9;
+	public static double critialChiValue = 0.0;	
 	
-	
-//	public static double calculateChiSquareValue(ArrayList<Category> categories, Vocabulary totalVocabulary) {
-//		
-//		double chiSquaredValue = 0.0;
-//		int totalAll = totalVocabulary.countTotalWords();
-//		
-//		for(Map.Entry<String, Integer> word : totalVocabulary.vocabulary.entrySet()) {
-//			String w = word.getKey();
-//			
-//			System.out.println("*** " + w);
-//			
-//			double kolomsom = 0.0;
-//			for(Category c : categories) {
-//				kolomsom += c.vocabulary.countByWord(w);
-//			}
-//			
-//			for(Category c : categories) {
-//				double rijsom = c.number_of_total_words();
-//				double observedCount = c.vocabulary.countByWord(w);
-//				double expectedCount = rijsom * kolomsom;
-//				System.out.println("Chi-squared for " + c.name() + ": " + (Math.pow((observedCount - expectedCount), 2) / expectedCount));
-//				chiSquaredValue += Math.pow((observedCount - expectedCount), 2) / expectedCount;
-//				
-//			}				
-//					
-//		}
-//
-//		return 	chiSquaredValue;	
-//	}
-	
-	
+	/**
+	 * Feature selection method
+	 * Rewrites the vocabularies of the categories and the totalVocabulary
+	 * to only include words with higher than given chi2 value. The chi2 value
+	 * denotes independence. This means this word is not average and therefore 
+	 * should be a better indicator for this class than other words  
+	 * @param categories
+	 * @param totalVocabulary
+	 */
 	public static void calculateChiSquareValue(ArrayList<Category> categories, Vocabulary totalVocabulary) {
 		int totalVocabularyWordCount = totalVocabulary.countTotalWords();
 		for(Category c : categories) {		
@@ -53,7 +31,7 @@ public class ChiSquared {
 				double chiValue = ChiSquared.getChiSquare(c, w, totalVocabulary, totalVocabularyWordCount, totalCategoryWordCount);
 				
 //				System.out.print(" | Chi Value for " + w + ": " + chiValue);
-				//When the word has a high chi-value (is independant), add it to the new vocabulary
+				//When the word has a high chi-value (eg. is independent), add it to the new vocabulary
 				if (chiValue > critialChiValue) {
 					newVocabulary.addWordWithCount(w, word.getValue());
 				}
@@ -68,6 +46,15 @@ public class ChiSquared {
 			
 	}
 	
+	/**
+	 * Helper method.
+	 * @param category - the category to be examined 
+	 * @param word - the word to be examined 
+	 * @param totalVocabulary 
+	 * @param totalVocabularyWordCount
+	 * @param totalCategoryWordCount
+	 * @return Chi2 value of the given for for the given category
+	 */
 	public static double getChiSquare(Category category, String word, Vocabulary totalVocabulary, int totalVocabularyWordCount, int totalCategoryWordCount) {
 		double N11 = category.vocabulary.countByWord(word);
 		double N12 = totalCategoryWordCount - N11;
