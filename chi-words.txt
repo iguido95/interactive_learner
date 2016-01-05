@@ -1,0 +1,12 @@
+Chi2-values for the words in the Data Set ‘book_example’
+
+*** Category H ***
+*uganda	- Chi Value: 0.7486111111111113
+*japan	- Chi Value: 2.933333333333333
+*tokyo	- Chi Value: 2.933333333333333
+
+*** Category S ***
+*uganda	- Chi Value: 0.7486111111111113
+*mexico	- Chi Value: 0.4125
+*bank	- Chi Value: 0.4125
+*solar	- Chi Value: 0.4125

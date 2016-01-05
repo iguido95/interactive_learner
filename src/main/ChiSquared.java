@@ -63,16 +63,22 @@ public class ChiSquared {
 		double N21 = totalVocabulary.countByWord(word) - N11;
 		double N22 = (totalVocabularyWordCount - totalVocabulary.countByWord(word)) - N12;
 		
-//		System.out.println(word);
-//		System.out.println(N11);
-//		System.out.println(N12);
-//		System.out.println(N21);
-//		System.out.println(N22);
+		System.out.println("*" + word);
+//		System.out.println("N11: " + N11);
+//		System.out.println("N12: " + N12);
+//		System.out.println("N21: " + N21);
+//		System.out.println("N22: " + N22);
 		
 		
 		double rijsom2 = N21 + N22;
 		double kolomsom1 = N11 + N21;
 		double kolomsom2 = N12 + N22;
+		
+//		System.out.println("Rijsom1: " + rijsom1);
+//		System.out.println("Rijsom2: " + rijsom2);
+//		System.out.println("Kolomsom1: " + kolomsom1);
+//		System.out.println("Kolomsom2: " + kolomsom2);
+		
 		
 		double n = rijsom1 + rijsom2;
 //		System.out.println("n: " + n + " total words: " + totalVocabulary.countTotalWords());
@@ -86,6 +92,8 @@ public class ChiSquared {
 		chiValue += Math.pow((N12 - E12), 2.0) / E12;
 		chiValue += Math.pow((N21 - E21), 2.0) / E21;
 		chiValue += Math.pow((N22 - E22), 2.0) / E22;
+		
+		System.out.println("Chi Value: " + chiValue);
 		
 		return chiValue;
 	}
