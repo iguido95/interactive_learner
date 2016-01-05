@@ -1,38 +1,26 @@
-Interactive Learner by Guido Teunissen & Kilian Ros
+﻿Interactive Learner by Guido Teunissen & Kilian Ros
 ---------------------------------------------------
 1. Open InteractiveLearner.java in the main package.
-2. Run the class and follow the Textual User Interface instructions 
+2. Run the class and follow the User Interface instructions 
    in the console.
 
+*GUI steps
+1. Beforehand you can change the K smoothing value and/ or the critical Chi square value.
+   Please mind that you have to press enter in order to save the values.
+2. Click the "Choose Training Directory..." button to select your training directory.
+All the files in the training directory should be named by this pattern: CLASSNAME-restOfFileName.txt
+3. Press the "Train Classifier" button to train the classifier, please wait for this process to complete.
+4. Go on to the next tab: "Use the Classifier"
+5. Choose your test file by clicking the "Choose Txt File..." button
+6. Click the "Classify File" button to get the most probable category.
+---Optionally---
+7. You can retrain the classifier by selecting one of the existing categories in the list or enter a new category.
+   Please mind that you have to press enter in order to save your custom category.
+8. Press the "Re-Classify File" button to execute the re-classification.
+
 *TUI steps
-1. Provide a path to the directory of your training data. 
-e.g. C:/Development/eclipse/workspace/interactive_learner/blogs/TRAINING
-All the files should be named by this pattern: CLASSNAME-restOfFileName.txt
-e.g. female-blog12training.txt
+You can also still use the TUI we made before the GUI. You can start the TUI by
+uncommenting the startTUI line in the main method of InteractiveLearner.java.
+It also works, but is mainly kept in the code for the reviewer to get a more clear
+look at what happens during the execution of the program.
 
-2. Provide a path to the file of the file you want to test.
-e.g. C:/Development/eclipse/workspace/interactive_learner/blogs/M/M-test9.txt
-
-
-----Extra Explanation Implementation-----
-See our previous report for the used formulas. We chose to use the multinomial 
-implementation to calculate the conditional probability. 
-
-It all starts with the TxtReader class (aside from the TUI and the starter class). 
-This class loads in the training documents by a specified directory by the user. 
-It iterates over all the documents in the given directory. To identify which 
-category a document belongs to the following file name structure has to be 
-user: “CLASSNAME-restOfFileName.txt”, so for example ‘female-blog12training.txt’. 
-Each document will become an array of words and an identifier for the category.
-The TxtReader also tokenizes and normalizes the words like mentioned above.
-
-When the TxtReader is done it passes the information to the Categories class 
-which separates all the documents and their words into the correct 
-category (and makes a new category if not already exists, based on the name). 
-It also keeps track of the total vocabulary and the total documents, which 
-are needed for the probability calculation. The vocabulary and number if 
-documents is also tracked for each individual category in the Category class.
-
-The calculation for a classification is implemented in the Category class by 
-the formula’s mentioned in the previous report. It now also calculates in the 
-log space to account for very small probabilities. 
