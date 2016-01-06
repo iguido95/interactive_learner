@@ -1,7 +1,9 @@
-﻿Interactive Learner by Guido Teunissen & Kilian Ros
+Interactive Learner by Guido Teunissen & Kilian Ros
 ---------------------------------------------------
-1. Open InteractiveLearner.java in the main package.
-2. Run the class and follow the User Interface instructions 
+Using the program:
+1. Import the folder as an existing project in Eclipse (or similar software)
+2. Open InteractiveLearner.java in the main package.
+3. Run the class and follow the User Interface instructions 
    in the console.
 
 *GUI steps
@@ -17,6 +19,8 @@ All the files in the training directory should be named by this pattern: CLASSNA
 7. You can retrain the classifier by selecting one of the existing categories in the list or enter a new category.
    Please mind that you have to press enter in order to save your custom category.
 8. Press the "Re-Classify File" button to execute the re-classification.
+---
+9. After this you could select a new file ‘Choose Txt File…’ to classify again.
 
 *TUI steps
 You can also still use the TUI we made before the GUI. You can start the TUI by
